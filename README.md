@@ -237,13 +237,13 @@ sudo reboot
 - Option for Raspberry Pi OS (ARM/ARM64)
 
 ```
-sudo apt install -y raspberrypi-kernel-headers build-essential bc dkms git
+sudo apt install -y raspberrypi-kernel-headers build-essential dkms git
 ```
 
 - Option for Debian, Kali, and Raspberry Pi Desktop (x86)
 
 ```
-sudo apt install -y linux-headers-$(uname -r) build-essential bc dkms git libelf-dev
+sudo apt install -y linux-headers-$(uname -r) build-essential dkms git libelf-dev
 ```
 
 - Option for Ubuntu (all official flavors) and the numerous Ubuntu based distros

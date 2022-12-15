@@ -22,8 +22,8 @@ EXTRA_CFLAGS += -Wno-implicit-fallthrough
 EXTRA_CFLAGS += -Wno-address
 EXTRA_CFLAGS += -Wframe-larger-than=1648
 
-GCC_VER_49 := $(shell echo `$(CC) -dumpversion | cut -f1-2 -d.` \>= 4.9 | bc )
-ifeq ($(GCC_VER_49),1)
+GCC_VER_49 := $(shell printf '%s\n' 4.9 `$(CC) -dumpversion` | sort -Ct. -k1,1n -k2,2n; echo $? )
+ifeq ($(GCC_VER_49),0)
 EXTRA_CFLAGS += -Wno-date-time	# Fix compile error && warning on gcc 4.9 and later
 endif
 
@@ -309,8 +309,8 @@ endif
 EXTRA_CFLAGS += -DCONFIG_RTL8188E
 
 _HAL_INTFS_FILES +=	hal/HalPwrSeqCmd.o \
-					hal/$(RTL871X)/Hal8188EPwrSeq.o\
- 					hal/$(RTL871X)/$(RTL871X)_xmit.o\
+					hal/$(RTL871X)/Hal8188EPwrSeq.o \
+					hal/$(RTL871X)/$(RTL871X)_xmit.o \
 					hal/$(RTL871X)/$(RTL871X)_sreset.o
 
 _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
@@ -2511,7 +2511,7 @@ all: modules
 
 modules:
 	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(shell pwd)  modules
-	
+
 sign:
 	@openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -nodes -days 36500 -subj "/CN=Custom MOK/"
 	@mokutil --import MOK.der
