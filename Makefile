@@ -18,6 +18,7 @@ EXTRA_CFLAGS += -Wno-vla
 EXTRA_CFLAGS += -Wno-misleading-indentation
 EXTRA_CFLAGS += -Wno-implicit-fallthrough
 #EXTRA_CFLAGS += -Wno-return-type
+#EXTRA_CFLAGS += -Wno-discarded-qualifiers
 
 # Activates Concurrent Mode if uncommented
 #EXTRA_CFLAGS += -DCONFIG_CONCURRENT_MODE
@@ -89,11 +90,10 @@ CONFIG_RTW_CHPLAN = 0xFF
 CONFIG_RTW_ADAPTIVITY_EN = disable
 CONFIG_RTW_ADAPTIVITY_MODE = normal
 CONFIG_SIGNAL_SCALE_MAPPING = n
-# necessary for WPA3 support
 CONFIG_80211W = y
 CONFIG_REDUCE_TX_CPU_LOADING = n
 CONFIG_BR_EXT = y
-CONFIG_TDLS = n
+CONFIG_TDLS = y
 CONFIG_WIFI_MONITOR = y
 CONFIG_MCC_MODE = n
 CONFIG_APPEND_VENDOR_IE_ENABLE = n
@@ -122,7 +122,7 @@ CONFIG_RTW_DEBUG = y
 CONFIG_RTW_LOG_LEVEL = 1
 
 # enable /proc/net/rtlxxxx/ debug interfaces
-CONFIG_PROC_DEBUG = y
+CONFIG_PROC_DEBUG = n
 
 ######################## Wake On Lan ##########################
 CONFIG_WOWLAN = n
@@ -2513,6 +2513,13 @@ install:
 uninstall:
 	rm -f $(MODDESTDIR)$(MODULE_NAME).ko
 	/sbin/depmod -a ${KVER}
+
+sign:
+	@openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -nodes -days 36500 -subj "/CN=Custom MOK/"
+	@mokutil --import MOK.der
+	@$(KSRC)/scripts/sign-file sha256 MOK.priv MOK.der 8821cu.ko
+
+sign-install: all sign install
 
 backup_rtlwifi:
 	@echo "Making backup rtlwifi drivers"
