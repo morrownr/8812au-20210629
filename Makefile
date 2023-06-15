@@ -2517,9 +2517,9 @@ uninstall:
 sign:
 	@openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -nodes -days 36500 -subj "/CN=Custom MOK/"
 	@mokutil --import MOK.der
-	@$(KSRC)/scripts/sign-file sha256 MOK.priv MOK.der 8821cu.ko
+	@$(KSRC)/scripts/sign-file sha256 MOK.priv MOK.der 8812au.ko
 
-sign-install: all sign install
+sign-install: sign install
 
 backup_rtlwifi:
 	@echo "Making backup rtlwifi drivers"
@@ -2576,4 +2576,5 @@ clean:
 	rm -fr Module.symvers ; rm -fr Module.markers ; rm -fr modules.order
 	rm -fr *.mod.c *.mod *.o .*.cmd *.ko *~
 	rm -fr .tmp_versions
+	rm -fr MOK.der MOK.priv
 endif
