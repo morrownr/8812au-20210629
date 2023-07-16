@@ -48,7 +48,7 @@ confirm that this is the correct driver for your adapter.
 
 ### Compatible CPU Architectures
 
-- x86, i686
+- x86, i386, i686
 - x86-64, amd64
 - armv6l, armv7l (arm)
 - aarch64 (arm64)
@@ -56,11 +56,11 @@ confirm that this is the correct driver for your adapter.
 ### Compatible Kernels
 
 - Kernels: 4.19 - 5.11 (Realtek)
-- Kernels: 5.12 - 6.3  (community support)
+- Kernels: 5.12 - 6.5  (community support)
 
 ### Tested Compilers
 
-- gcc 9, 10, 11 and 12
+- gcc 10, 11 and 12
 
 ### Tested Linux Distributions
 
@@ -87,7 +87,7 @@ be provided via PR or message in Issues.
 
 - [SkiffOS](https://github.com/skiffos/skiffos/) for Odroid XU4 (ARM 32 bit) (kernel 6.0.7)
 
-- [Ubuntu](https://www.ubuntu.com) 22.04 (kernel 5.15) and 22.10 (kernel 5.19) (kernel 6.2)
+- [Ubuntu](https://www.ubuntu.com) 22.04 (kernel 5.15), 22.10 (kernel 5.19), 23.04 (kernel 6.2)
 
 - [Void Linux](https://voidlinux.org/) (kernel 5.18)
 
@@ -97,10 +97,10 @@ knowledgable RHEL developers if they want to merge the required
 support and keep it current. I reserve the right to delete this support
 if it causes any problems.
 
-Note: Android is supported in the driver according to Realtek. I will support
-knowledgable Android developers if they want to merge and keep current the
-required support (most likely just instructions about how to compile and make
-a modification or two to the Makefile).
+Note: Android is supported in the driver according to Realtek. I will
+support knowledgable Android developers if they want to merge and keep
+current the required support (most likely just instructions about how to
+compile and maybe a modification or two to the Makefile).
 
 ### Compatible Devices
 
@@ -126,7 +126,7 @@ Warning: Installing multiple out-of-kernel drivers for the same hardware
 usually does not end well. The install-driver.sh script has the capability
 to detect and remove many conflicting drivers but not all. If this driver
 does not work well after installation and you have previously installed a
-driver that you did not remove, it suggested that you run the following
+driver that you did not remove, it is suggested that you run the following
 command in an effort to determine if you need to take action to manually
 remove conflicting drivers:
 
@@ -136,8 +136,8 @@ sudo dkms status
 
 Warning: If you decide to do a distro upgrade, which will likely install a
 new version of kernel such as 5.15 to 6.1, you need to upgrade this driver
-with the newest available before performing the disto upgrade. Use the
-following commands in the driver directory:
+with the newest available code before performing the disto upgrade. Use
+the following commands in the driver directory:
 
 ```
 git pull
@@ -235,13 +235,13 @@ environment for your system. General guidance follows.
 
 Development Environment Requirements: (package names may vary by distro)
 
-- Mandatory: `gcc` `make` `bc` `kernel-headers` `build-essential` `git`
-- Highly recommended: `dkms` `rfkill` `iw` `ip`
-- Mandatory if Secure Boot is active: `openssl` `mokutil`
+- Mandatory packages: `gcc` `make` `bc` `kernel-headers` `build-essential` `git`
+- Highly recommended packages: `dkms` `rfkill` `iw` `ip`
+- Mandatory packages if Secure Boot is active: `openssl` `sign-file` `mokutil`
 
 Note: The below options should take care of the mandatory and highly recommended
-requirements but only you know if Secure Boot is active. If Secure Boot is
-active on your system, please also install the mandatory packages for Secure Boot.
+requirements. If Secure Boot is active on your system, please also install the
+mandatory packages for Secure Boot as shown above.
 
 - Option for Armbian (arm64)
 
@@ -268,6 +268,8 @@ sudo apt install -y build-essential dkms git iw
 ```
 
 - Option for Fedora
+
+Note: Fedora users should also install `openssl` if secure boot is active.
 
 ```
 sudo dnf -y install git dkms kernel-devel
@@ -359,16 +361,18 @@ Note: If you elect to skip the reboot at the end of the installation
 script, the driver may not load immediately and the driver options will
 not be applied. Rebooting is strongly recommended.
 
-Note: Fedora users that have secure boot turned on should run the following to
-enroll the key:
+Note: Fedora users that have secure boot turned on may need to run the
+following to enroll the key:
 
 ```
 sudo mokutil --import /var/lib/dkms/mok.pub
 ```
 
-Manual build and installation instructions: The above installation steps
-automate the installation process, however, if you want to or need to do a
-command line installation, use the following:
+### Manual Installation Instructions
+
+Note: The above installation steps automate the installation process,
+however, if you want to or need to do a basic command line installation,
+use the following:
 
 ```
 make clean
@@ -378,6 +382,8 @@ make clean
 make
 ```
 
+If secure boot is off:
+
 ```
 sudo make install
 ```
@@ -385,6 +391,47 @@ sudo make install
 ```
 sudo reboot
 ```
+
+If secure boot is on:
+
+Note: Please read to the end of this section before coming back here to
+enter commands.
+
+```
+sudo make sign-install
+```
+
+You will be promted for a password, please remember the password as it
+will be used in some of the following steps.
+
+```
+sudo reboot
+```
+
+The MOK managerment screen will appear during boot:
+
+`Shim UEFI Key Management"
+
+`Press any key...`
+
+Select "Enroll key"
+
+Select "Continue"
+
+Select "Yes"
+
+When promted, enter the password you entered earlier.
+
+If you enter the wrong password, your computer will not be bootable. In
+this case, use the BOOT menu from your BIOS to boot then as follows:
+
+```
+sudo mokutil --reset
+```
+
+Restart your computer and use the BOOT menu from BIOS to boot. In the MOK
+managerment screen, select `reset MOK list`. Then Reboot and retry from
+the step `sudo make sign-install`.
 
 To remove the driver if installed by the manual installation instructions:
 
@@ -396,8 +443,9 @@ sudo make uninstall
 sudo reboot
 ```
 
-Note: If you use the manual installation instructions, you will need to repeat
-the process each time a new kernel is installed in your distro.
+Note: If you use the manual installation instructions, or if dkms is not
+installed, you will need to repeat the process each time a new kernel is
+installed in your distro.
 
 -----
 
@@ -524,5 +572,9 @@ After making and saving changes, reboot the router.
 - Extention cables can be problematic. A way to check if the extension cable is the problem is to plug the adapter temporarily into a USB port on the computer.
 
 - Some USB WiFi adapters require considerable electrical current and push the capabilities of the power available via USB port. One example is adapters that use the Realtek 8814au chipset. Using a powered multiport USB extension can be a good idea in cases like this.
+
+-----
+
+#### [Go to Main Menu](https://github.com/morrownr/USB-WiFi)
 
 -----

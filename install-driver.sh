@@ -28,7 +28,7 @@
 # GNU General Public License for more details.
 
 SCRIPT_NAME="install-driver.sh"
-SCRIPT_VERSION="20230227"
+SCRIPT_VERSION="20230628"
 MODULE_NAME="8812au"
 DRV_VERSION="5.13.6"
 
@@ -141,6 +141,10 @@ echo ": ${SCRIPT_NAME} v${SCRIPT_VERSION}"
 # display architecture
 echo ": ${KARCH} (architecture)"
 
+# calculate number of cores to be used in order to avoid Out of Memory
+# condition in low-RAM systems by limiting core usage.
+# this section of code is also in the file dkms-make.sh and that 
+# code should stay the same as this code.
 SMEM=$(LANG=C free | awk '/Mem:/ { print $2 }')
 sproc=$(nproc)
 # avoid Out of Memory condition in low-RAM systems by limiting core usage
@@ -148,6 +152,10 @@ if [ "$sproc" -gt 1 ]; then
 	if [ "$SMEM" -lt 1400000 ]
 	then
 		sproc=2
+	fi
+	if [ "$SMEM" -lt 700000 ]
+	then
+		sproc=1
 	fi
 fi
 
@@ -170,13 +178,20 @@ if command -v dkms >/dev/null 2>&1; then
 	echo ": ""${dkms_ver}"
 fi
 
-# display secure mode status if SecureBoot is enabled and if mokutil is installed
+# display secure mode status
 if command -v mokutil >/dev/null 2>&1; then
 	if mokutil --sb-state | grep -i  enabled >/dev/null 2>&1; then
-		echo ": SecureBoot enabled - read FAQ about SecureBoot"
+		echo ": SecureBoot enabled"
 	fi
+	if mokutil --sb-state | grep -i  disabled >/dev/null 2>&1; then
+		echo ": SecureBoot disabled"
+	fi
+	if mokutil --sb-state | grep -i  EFI >/dev/null 2>&1; then
+		echo ": EFI variables are not supported on this system"
+	fi
+else
+	echo ": mokutil not installed"
 fi
-
 
 echo ": ---------------------------"
 echo
@@ -274,13 +289,21 @@ if ! command -v dkms >/dev/null 2>&1; then
 		exit $RESULT
 	fi
 
-# 	As shown in Makefile
-# 	install:
-#		install -p -m 644 $(MODULE_NAME).ko  $(MODDESTDIR)
-#		/sbin/depmod -a ${KVER}
-	make install
-	RESULT=$?
-
+#	if secure boot is active, use sign-install
+	if command -v mokutil >/dev/null 2>&1; then
+		if mokutil --sb-state | grep -i  enabled >/dev/null 2>&1; then
+			echo ": SecureBoot enabled - read FAQ about SecureBoot"
+			make sign-install
+			RESULT=$?
+		else
+			make install
+			RESULT=$?		
+		fi
+	else
+		make install
+		RESULT=$?
+	fi
+	
 	if [ "$RESULT" = "0" ]; then
         	make clean >/dev/null 2>&1
 		echo "The driver was installed successfully."
