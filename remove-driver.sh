@@ -116,10 +116,6 @@ fi
 
 # check for and remove all dkms installations with DRV_NAME
 #
-# dkms status [module/module-version] [-k kernel/arch]
-#
-# $ dkms status
-#
 if command -v dkms >/dev/null 2>&1; then
 	dkms status | while IFS="/, " read -r modname modver kerver _dummy; do
 		case "$modname" in *${MODULE_NAME})
@@ -128,7 +124,6 @@ if command -v dkms >/dev/null 2>&1; then
 		esac
 	done
 	RESULT=$?
-#	echo "Result=${RESULT}"
 
 #	 RESULT will be 3 if there are no instances of module to remove
 #	 however we still need to remove various files or the install script
