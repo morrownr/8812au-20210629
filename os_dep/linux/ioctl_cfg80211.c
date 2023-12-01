@@ -5408,11 +5408,7 @@ exit:
 }
 
 static int cfg80211_rtw_change_beacon(struct wiphy *wiphy, struct net_device *ndev,
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 7, 0))
-	struct cfg80211_ap_update *info)
-#else
-	struct cfg80211_beacon_data *info)
-#endif
+		struct cfg80211_beacon_data *info)
 {
 	int ret = 0;
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(ndev);
