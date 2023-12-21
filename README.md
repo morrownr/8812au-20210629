@@ -1,5 +1,7 @@
 ## 8812au ( 8812au.ko ) :rocket:
 
+Need testers and coders: I have an updated version of the code for the rtl8812au chipset #114
+
 ## Linux Driver for USB WiFi Adapters that are based on the RTL8812AU Chipset
 
 - v5.13.6 (Realtek) (20210629) plus updates from the Linux community
