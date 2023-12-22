@@ -400,14 +400,9 @@ static int napi_recv(_adapter *padapter, int budget)
 		rx_ok = _FALSE;
 
 #ifdef CONFIG_RTW_GRO
-		/*	 
-			cloned SKB use dataref to avoid kernel release it.
-			But dataref changed in napi_gro_receive.
-			So, we should prevent cloned SKB go into napi_gro_receive.
-		*/
 		if (pregistrypriv->en_gro && !skb_cloned(pskb)) {
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0))
-			if (rtw_napi_gro_receive(&padapter->napi, pskb) != GRO_MERGED_FREE)
+			rtw_napi_gro_receive(&padapter->napi, pskb);
 #else
 			if (rtw_napi_gro_receive(&padapter->napi, pskb) != GRO_DROP)
 #endif
