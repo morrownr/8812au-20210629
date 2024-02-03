@@ -91,7 +91,7 @@ supported.
 Note: The information in this section depends largely on user reports
 which can be provided via PR or message in Issues.
 
-- [Arch Linux](https://www.archlinux.org) (kernels 5.4 and 5.11)
+- [Arch Linux](https://www.archlinux.org) (kernels 5.4, 5.11 and 6.6)
 
 - [Armbian](https://www.armbian.com/) (kernel 5.15) (Rock 4 SE (Rock 4b image with xfce))
 
@@ -147,6 +147,7 @@ OpenWRT so it is strongly advised to use the already supported chipsets.
 * [Edimax EW-7822UAC](https://www.amazon.com/Edimax-EW-7822UAC-Dual-Band-Adjustable-Performance/dp/B00BXAXO7C) - Edimax made the source for this driver available.
 * Linksys WUSB6300 V1
 * Rosewill RNX-AC1200UBE
+* TP-Link Archer T4U V1
 * TRENDnet TEW-805UB
 * Numerous adapters that are based on the supported chipset.
 
