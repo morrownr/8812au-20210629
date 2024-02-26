@@ -43,7 +43,7 @@ information:
 - AP mode DFS channel support
 - Supported interface modes
   * Managed
-  * Monitor (see FAQ) (see [Monitor_Mode](https://github.com/morrownr/Monitor_Mode)
+  * Monitor (see FAQ) (see [Monitor_Mode](https://github.com/morrownr/Monitor_Mode))
   * AP
   * P2P-client
   * P2P-GO
