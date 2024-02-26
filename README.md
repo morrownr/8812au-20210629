@@ -91,7 +91,7 @@ supported.
 Note: The information in this section depends largely on user reports
 which can be provided via PR or message in Issues.
 
-- [Arch Linux](https://www.archlinux.org) (kernels 5.4, 5.11 and 6.6)
+- [Arch Linux](https://www.archlinux.org) (kernels 5.4, 5.11 and 6.6 - 6.7)
 
 - [Armbian](https://www.armbian.com/) (kernel 5.15) (Rock 4 SE (Rock 4b image with xfce))
 
