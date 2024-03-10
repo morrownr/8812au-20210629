@@ -1,7 +1,28 @@
 ## 8812au ( 8812au.ko ) :rocket:
 
-Need testers and coders: I have an updated version of the code for the rtl8812au
-chipset. See issue #114
+Notice: A newer version of this driver will be available later this
+month at the following location:
+
+https://github.com/morrownr/8812au-20210820
+
+This new driver is based on updated source from Realtek. It is the last
+release of source from Realtek. There are numerous minor updates and
+improvements in this driver. The following modes are supported:
+
+  * IBSS (ad-hoc)
+  * Managed (client)
+  * AP (master) (see file 8812au.conf for hostapd configuration information)
+  * P2P-client (Wi-Fi Direct)
+  * P2P-GO (Wi-Fi Direct)
+
+Note: Monitor mode is not supported. Linux users that want good support
+for monitor mode in a dual band or tri-band adapter should seek out USB
+WiFi adapters based on the mt7610u, mt7612u or mt7921au chipsets.
+
+This repo will be taken down around one month after the repo for the new
+driver is made public. I hope everyone enjoys the new driver.
+
+@morrownr
 
 ## Linux Driver for USB WiFi Adapters that are based on the RTL8812AU Chipset
 
@@ -77,7 +98,7 @@ the hardware to test the above.
 ### Compatible Kernels
 
 - Kernels: 4.19 - 5.11 (Realtek)
-- Kernels: 5.12 - 6.7  (community support)
+- Kernels: 5.12 - 6.8  (community support)
 
 Note: Kernels earlier than 4.19 may work but are not tested or
 supported.
@@ -91,7 +112,7 @@ supported.
 Note: The information in this section depends largely on user reports
 which can be provided via PR or message in Issues.
 
-- [Arch Linux](https://www.archlinux.org) (kernels 5.4, 5.11 and 6.6 - 6.7)
+- [Arch Linux](https://www.archlinux.org) (kernels 5.4, 5.11, 6.6 and 6.7)
 
 - [Armbian](https://www.armbian.com/) (kernel 5.15) (Rock 4 SE (Rock 4b image with xfce))
 
