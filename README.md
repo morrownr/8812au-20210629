@@ -1,7 +1,7 @@
 ## 8812au ( 8812au.ko ) :rocket:
 
-Notice: A newer version of this driver will be available later this
-month at the following location:
+Notice: A newer version of this driver will be available on or about
+20240331 at the following location:
 
 https://github.com/morrownr/8812au-20210820
 
@@ -14,6 +14,7 @@ improvements in this driver. The following modes are supported:
   * AP (master) (see file 8812au.conf for hostapd configuration information)
   * P2P-client (Wi-Fi Direct)
   * P2P-GO (Wi-Fi Direct)
+  * Concurrent
 
 Note: Monitor mode is not supported. Linux users that want good support
 for monitor mode in a dual band or tri-band adapter should seek out USB
