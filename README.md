@@ -1,13 +1,12 @@
 ## 8812au ( 8812au.ko ) :rocket:
 
-Notice: A newer version of this driver will be available on or about
-20240331 at the following location:
+Notice: A newer version of this driver is now available at the following location:
 
 https://github.com/morrownr/8812au-20210820
 
 This new driver is based on updated source from Realtek. It is the last
-release of source from Realtek. There are numerous minor updates and
-improvements in this driver. The following modes are supported:
+release of source from Realtek for this chipset. There are numerous minor
+updates and improvements in this driver. The following modes are supported:
 
   * IBSS (ad-hoc)
   * Managed (client)
